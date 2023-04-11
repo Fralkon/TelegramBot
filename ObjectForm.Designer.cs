@@ -36,13 +36,11 @@
             this.nameText = new System.Windows.Forms.TextBox();
             this.ipText = new System.Windows.Forms.TextBox();
             this.portText = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.userAgentTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(274, 199);
+            this.button1.Location = new System.Drawing.Point(274, 166);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -52,7 +50,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(142, 199);
+            this.button2.Location = new System.Drawing.Point(142, 166);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 1;
@@ -108,29 +106,11 @@
             this.portText.Size = new System.Drawing.Size(194, 23);
             this.portText.TabIndex = 8;
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(56, 142);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(63, 15);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "User agent";
-            // 
-            // userAgentTextBox
-            // 
-            this.userAgentTextBox.Location = new System.Drawing.Point(142, 139);
-            this.userAgentTextBox.Name = "userAgentTextBox";
-            this.userAgentTextBox.Size = new System.Drawing.Size(194, 23);
-            this.userAgentTextBox.TabIndex = 10;
-            // 
             // ObjectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(397, 250);
-            this.Controls.Add(this.userAgentTextBox);
-            this.Controls.Add(this.label4);
+            this.ClientSize = new System.Drawing.Size(397, 222);
             this.Controls.Add(this.portText);
             this.Controls.Add(this.ipText);
             this.Controls.Add(this.nameText);
@@ -156,7 +136,5 @@
         private TextBox nameText;
         private TextBox ipText;
         private TextBox portText;
-        private Label label4;
-        private TextBox userAgentTextBox;
     }
 }

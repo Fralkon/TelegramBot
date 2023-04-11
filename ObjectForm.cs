@@ -24,14 +24,13 @@ namespace TelegramBot
             InitializeComponent();
             this.mySQL = mySQL;
             this.idObject = idObject;
-            string SQLData = "SELECT name, ip, port, user_agent FROM object WHERE id = " + idObject;
+            string SQLData = "SELECT name, ip, port FROM object WHERE id = " + idObject;
             DataTable datatable = mySQL.GetDataTableSQL(SQLData);
             if (datatable.Rows.Count > 0)
             {
                 nameText.Text = datatable.Rows[0]["name"].ToString();
                 ipText.Text = datatable.Rows[0]["ip"].ToString();
                 portText.Text = datatable.Rows[0]["port"].ToString();
-                userAgentTextBox.Text = datatable.Rows[0]["user_agent"].ToString();
             }
         }
         private void button2_Click(object sender, EventArgs e)
@@ -57,11 +56,11 @@ namespace TelegramBot
             }
             if (idObject == "")
             {
-                mySQL.SendSQL("INSERT object (name, ip, port, status, user_agent) VALUES('" + nameText.Text + "','" + ipText.Text + "',"+portText.Text+",'offline', '"+userAgentTextBox.Text+"')");
+                mySQL.SendSQL("INSERT object (name, ip, port, status) VALUES('" + nameText.Text + "','" + ipText.Text + "',"+portText.Text+",'offline')");
             }
             else
             {
-                mySQL.SendSQL("UPDATE object SET port = '" + portText.Text + "' , name = '" + nameText.Text + "' , ip = '" + ipText.Text + "' , user_agent = '"+userAgentTextBox.Text+"' WHERE id = " + idObject);
+                mySQL.SendSQL("UPDATE object SET port = '" + portText.Text + "' , name = '" + nameText.Text + "' , ip = '" + ipText.Text + "' WHERE id = " + idObject);
             }
             this.Close();
         }
