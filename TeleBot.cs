@@ -32,7 +32,6 @@ namespace TelegramBot
         TCPControl tcpControl;
         MySQL mySQL;
         long IdAdminTG;
-        const string IDBot = "1607643022:AAGen7PfJb_EhTByGZk4cqooDCGCukcNG4w";
         object obj = new object();
         TelegramBotClient botClient;
         CancellationTokenSource cts;
@@ -48,9 +47,15 @@ namespace TelegramBot
             using (DataTable userAdmin = mySQL.GetDataTableSQL("SELECT id_chat FROM users WHERE id = 1"))
                 if(userAdmin.Rows.Count != 0)
                     IdAdminTG = long.Parse(userAdmin.Rows[0]["id_chat"].ToString());
-            botClient = new TelegramBotClient(IDBot);
+            string token = String.Empty;
+            using (DataTable settingTG = mySQL.GetDataTableSQL("SELECT token FROM telegram_setting WHERE id = 1"))
+                if (settingTG.Rows.Count != 0)
+                    token = settingTG.Rows[0]["token"].ToString();
+            if (token == String.Empty)
+                throw new Exception("Error token TG");
+            botClient = new TelegramBotClient(token);
             cts = new CancellationTokenSource();
-            handler = new UpdateHandler();
+            handler = new UpdateHandler(mySQL);
             handler.Question = false;
             handler.eventQuestion += GetMessageQuestion;
             receiverOptions = new ReceiverOptions();
@@ -114,20 +119,56 @@ namespace TelegramBot
         }
         class UpdateHandler : IUpdateHandler
         {
+            MySQL mySQL;
+            public UpdateHandler(MySQL mySQL)
+            {
+                this.mySQL = mySQL;
+            }
             public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
             {
                 Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(update));
                 if (update.Type == UpdateType.Message)
                 {
-                    var message = update.Message;                    
+                    var message = update.Message;
                     if (Question)
                     {
-                        await botClient.SendTextMessageAsync(message.Chat, "OK");
+                        await botClient.SendTextMessageAsync(chatId: message.Chat, text: "OK", cancellationToken: cancellationToken);
                         eventQuestion(this, new EventQuestionArg(message.Text));
                         Question = false;
                     }
                     else
-                        await botClient.SendTextMessageAsync(message.Chat, "Опоздал малеха");
+                        Request(message.Text, botClient, update.Message.Chat, cancellationToken);
+                }
+            }
+            private async void Request(string request, ITelegramBotClient botClient, Chat chat, CancellationToken cancellationToken)
+            {
+                switch (request)
+                {
+                    case "status":
+                        {
+                            string answer = String.Empty;
+                            using (DataTable status = mySQL.GetDataTableSQL("SELECT name, status FROM object"))
+                            {
+                                if (status.Rows.Count > 0)
+                                {
+                                    foreach(DataRow row in status.Rows)
+                                    {
+                                        answer += "Object: " + row["name"].ToString() + " status: " + row["status"].ToString() + "\n";
+                                    }
+                                }
+                                else
+                                {
+                                    answer = "Нет данных.";
+                                }
+                                await botClient.SendTextMessageAsync(chatId: chat, text: answer, cancellationToken: cancellationToken);
+                            }
+                            return;
+                        }
+                    default:
+                        {
+                            await botClient.SendTextMessageAsync(chatId: chat, text: "Ошибка запроса", cancellationToken: cancellationToken);
+                            return;
+                        }
                 }
             }
             public Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
@@ -135,12 +176,10 @@ namespace TelegramBot
                 Console.Error.WriteLine(exception);
                 return Task.CompletedTask;
             }
-
             public Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
-
             public bool Question { get; set; }
             public EventHandler<EventQuestionArg> eventQuestion { get; set; }
         }

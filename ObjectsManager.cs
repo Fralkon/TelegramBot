@@ -26,7 +26,7 @@ namespace TelegramBot
         }
         private void UpDateTable()
         {
-            string SQLData = "SELECT auth.id, object.name, auth.step, auth.login, auth.password, auth.site, auth.status FROM auth, object WHERE auth.id_object = object.id";
+            string SQLData = "SELECT auth.id, object.name, auth.step, auth.site, auth.login, auth.password, auth.status FROM auth, object WHERE auth.id_object = object.id";
             DataTable datatable = mySQL.GetDataTableSQL(SQLData);
             datatable.Columns["id"].ColumnName = "ID";
             datatable.Columns["name"].ColumnName = "Obj name";
@@ -134,6 +134,25 @@ namespace TelegramBot
                 mySQL.SendSQL("DELETE FROM step WHERE id = " + objectsData.SelectedRows[0].Cells[0].Value.ToString());
                 UpDateTableStep();
             }
+        }
+        private void Status_ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(authData.SelectedRows.Count > 0)
+            {
+                ToolStripMenuItem? menuItem = sender as ToolStripMenuItem;
+                if (menuItem != null) {
+                    ChangeStatus("auth",authData.SelectedRows[0].Cells[0].Value.ToString(),menuItem.Text);
+                }
+                else
+                {
+                    MessageBox.Show("Error toolStrip");
+                }
+                UpDateTable();
+            }
+        }
+        private void ChangeStatus(string bd, string id, string status)
+        {
+            mySQL.SendSQL("UPDATE " + bd +" SET status = '" + status + "' WHERE id = " + id);
         }
     }
 }

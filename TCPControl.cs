@@ -112,24 +112,30 @@ namespace TelegramBot
             {
                 var stream = client.GetStream();
                 string message = string.Empty;
-                do
+                try
                 {
-                    byte buffer = (byte)stream.ReadByte();
-                    if (buffer == 0)
-                        break;
-                    message += (char)buffer;
+                    do
+                    {
+                        byte buffer = (byte)stream.ReadByte();
+                        if (buffer == 0)
+                            break;
+                        message += (char)buffer;
+                    }
+                    while (true);
+                    Console.WriteLine(message);
+                    TCPMessage? m = JsonSerializer.Deserialize<TCPMessage>(message);
+                    if (m == null)
+                        Console.WriteLine("Error serelize");
+                    else
+                        MessageReceived?.Invoke(this, new EventArgTCPClient(m));
                 }
-                while (true);
-                Console.WriteLine(message);
-                TCPMessage? m = JsonSerializer.Deserialize<TCPMessage>(message);
-                if (m == null)
-                    Console.WriteLine("Error serelize");
-                else
-                    MessageReceived?.Invoke(this, new EventArgTCPClient(m));
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
                 client.Close();
             });
         }
-
         public void Dispose()
         {
             if (Listener != null)
@@ -140,8 +146,15 @@ namespace TelegramBot
         private void SendTCPMesage(TCPMessage message, EnumIPManager enumIP)
         {
             TcpClient ControlServer = new TcpClient();
-            ControlServer.Connect(IPManager.GetEndPoint(enumIP));
-            ControlServer.GetStream().Write(Encoding.UTF8.GetBytes(JsonSerializer.Serialize<TCPMessage>(message) + "\0"));
+            try
+            {
+                ControlServer.Connect(IPManager.GetEndPoint(enumIP));
+                ControlServer.GetStream().Write(Encoding.UTF8.GetBytes(JsonSerializer.Serialize<TCPMessage>(message) + "\0"));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
             ControlServer.Close();
         }
         public void SendResultMessage(string text, EnumTypeSite site)
