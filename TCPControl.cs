@@ -36,7 +36,8 @@ namespace TelegramBot
         Profitcentr,
         WmrFast,
         WebofSar,
-        Losena
+        Losena,
+        VipClick
     }
     enum TypeMessage
     {

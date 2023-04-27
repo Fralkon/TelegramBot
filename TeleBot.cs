@@ -77,13 +77,13 @@ namespace TelegramBot
         {
             cts.Cancel();
         }
-        public void GetMessageQuestion(object e, EventQuestionArg arg)
+        public void GetMessageQuestion(object? e, EventQuestionArg arg)
         {
             EventTeleBotMessage(this, arg);
             buffer = arg.Text;
             eventMessage.Set();
         }
-        public void Message(object e, EventArgTCPClient arg)
+        public void Message(object? e, EventArgTCPClient arg)
         {
             lock (obj)
             {
