@@ -39,8 +39,66 @@ namespace TelegramBot
 
         private void telegramToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TelegramBotManager telegramBotManager = new TelegramBotManager(mySQL);
-            telegramBotManager.ShowDialog();
+            string SQLData = "SELECT * FROM object";
+            DataTable datatable = mySQL.GetDataTableSQL(SQLData);
+            datatable.Columns["id"].ColumnName = "ID";
+            datatable.Columns["name"].ColumnName = "»Ïˇ";
+            datatable.Columns["ip"].ColumnName = "IP";
+            datatable.Columns["port"].ColumnName = "Port";
+            datatable.Columns["status"].ColumnName = "—Ú‡ÚÛÒ";
+            objectsData.DataSource = datatable;
+        }
+        private void ÒÓÁ‰‡Ú¸ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UserForm user = new UserForm(mySQL);
+            user.ShowDialog();
+            UpDateTableUser();
+        }
+        private void ËÁÏÂÌËÚ¸ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (usersData.SelectedRows.Count != 0)
+            {
+                UserForm user = new UserForm(mySQL, usersData.SelectedRows[0].Cells[0].Value.ToString());
+                user.ShowDialog();
+                UpDateTableUser();
+            }
+        }
+        private void Û‰‡ÎËÚ¸ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (usersData.SelectedRows.Count == 1)
+            {
+                mySQL.SendSQL("DELETE FROM users WHERE id = " + usersData.SelectedRows[0].Cells[0].Value.ToString());
+                UpDateTableUser();
+            }
+        }
+        private void ÒÓÁ‰‡Ú¸ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ObjectForm objectForm = new ObjectForm(mySQL);
+            objectForm.ShowDialog();
+            UpDateTableObject();
+        }
+        private void ËÁÏÂÌËÚ¸ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (objectsData.SelectedRows.Count != 0)
+            {
+                ObjectForm objectForm = new ObjectForm(mySQL, objectsData.SelectedRows[0].Cells[0].Value.ToString());
+                objectForm.ShowDialog();
+                UpDateTableObject();
+            }
+        }
+        private void Û‰‡ÎËÚ¸ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (objectsData.SelectedRows.Count == 1)
+            {
+                mySQL.SendSQL("DELETE FROM object WHERE id = " + objectsData.SelectedRows[0].Cells[0].Value.ToString());
+                UpDateTableObject();
+            }
+        }
+        private void managerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AuthForm authForm = new AuthForm(mySQL);
+            authForm.ShowDialog();
+            authForm.ShowDialog();
         }
     }
 }
