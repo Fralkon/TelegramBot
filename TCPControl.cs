@@ -132,6 +132,7 @@ namespace TelegramBot
                 }
                 catch (Exception ex)
                 {
+                    TeleBot.Question = false;
                     Console.WriteLine(ex.ToString());
                 }
                 client.Close();

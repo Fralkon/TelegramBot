@@ -56,7 +56,6 @@ namespace TelegramBot
             botClient = new TelegramBotClient(token);
             cts = new CancellationTokenSource();
             handler = new UpdateHandler(mySQL);
-            handler.Question = false;
             handler.eventQuestion += GetMessageQuestion;
             receiverOptions = new ReceiverOptions();
             tcpControl = new TCPControl(IPManager.GetEndPoint(EnumIPManager.BotTelegram));
@@ -98,7 +97,7 @@ namespace TelegramBot
                             {
                                 eventMessage.Reset();
                                 botClient.SendPhotoAsync(IdAdminTG, new InputMedia(ms, "Screen.png"));
-                                handler.Question = true;
+                                Question = true;
                                 eventMessage.WaitOne();
                                 tcpControl.SendResultMessage(buffer, arg.Message.Site);
                             };
@@ -117,6 +116,7 @@ namespace TelegramBot
                 }
             }
         }
+        static public bool Question { get; set; } = false;
         class UpdateHandler : IUpdateHandler
         {
             MySQL mySQL;
@@ -180,7 +180,6 @@ namespace TelegramBot
             {
                 throw new NotImplementedException();
             }
-            public bool Question { get; set; }
             public EventHandler<EventQuestionArg> eventQuestion { get; set; }
         }
     }
