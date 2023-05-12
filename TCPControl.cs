@@ -37,6 +37,7 @@ namespace TelegramBot
         WmrFast,
         WebofSar,
         Losena,
+        SeoClub,
         VipClick
     }
     enum TypeMessage

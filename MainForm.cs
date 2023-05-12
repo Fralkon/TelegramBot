@@ -34,13 +34,13 @@ namespace TelegramBot
         private void objectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ObjectsManager authForm = new ObjectsManager(mySQL);
-            authForm.ShowDialog();
+            authForm.Show();
         }
 
         private void telegramToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TelegramBotManager telegramBotManager = new TelegramBotManager(mySQL);
-            telegramBotManager.ShowDialog();
+            telegramBotManager.Show();
         }
     }
 }
