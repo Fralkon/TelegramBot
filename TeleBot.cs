@@ -27,7 +27,7 @@ namespace TelegramBot
             this.Image = Image;
         }
     }
-    class TeleBot
+    public class TeleBot
     {
         TCPControl tcpControl;
         MySQL mySQL;
@@ -77,6 +77,11 @@ namespace TelegramBot
         {
             cts.Cancel();
         }
+        public void ResetQuestion()
+        {
+            handler.Question = false;
+            MessageBox.Show("Reset question bot.");
+        }
         public void GetMessageQuestion(object? e, EventQuestionArg arg)
         {
             EventTeleBotMessage(this, arg);
@@ -120,6 +125,8 @@ namespace TelegramBot
         class UpdateHandler : IUpdateHandler
         {
             MySQL mySQL;
+            public bool Question { get; set; }
+            public EventHandler<EventQuestionArg> eventQuestion { get; set; }
             public UpdateHandler(MySQL mySQL)
             {
                 this.mySQL = mySQL;
@@ -180,8 +187,6 @@ namespace TelegramBot
             {
                 throw new NotImplementedException();
             }
-            public bool Question { get; set; }
-            public EventHandler<EventQuestionArg> eventQuestion { get; set; }
         }
     }
 }

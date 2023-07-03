@@ -13,8 +13,10 @@ namespace TelegramBot
     public partial class TelegramBotManager : Form
     {
         MySQL mySQL;
-        public TelegramBotManager(MySQL mySQL)
+        TeleBot bot;
+        public TelegramBotManager(MySQL mySQL, TeleBot bot)
         {
+            this.bot = bot;
             this.mySQL = mySQL;
             InitializeComponent();
             usersData.ContextMenuStrip = contextMenuStripUser;
@@ -52,6 +54,10 @@ namespace TelegramBot
                 mySQL.SendSQL("DELETE FROM users WHERE id = " + usersData.SelectedRows[0].Cells[0].Value.ToString());
                 UpDateTableUser();
             }
+        }
+        private void resetQuakToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bot.ResetQuestion();
         }
     }
 }

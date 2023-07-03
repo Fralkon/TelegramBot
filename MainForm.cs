@@ -39,7 +39,7 @@ namespace TelegramBot
 
         private void telegramToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TelegramBotManager telegramBotManager = new TelegramBotManager(mySQL);
+            TelegramBotManager telegramBotManager = new TelegramBotManager(mySQL, teleBot);
             telegramBotManager.Show();
         }
     }

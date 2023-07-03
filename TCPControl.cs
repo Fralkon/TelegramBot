@@ -27,7 +27,7 @@ namespace TelegramBot
             }
         }
     }
-    enum EnumTypeSite
+    public enum EnumTypeSite
     {
         None,
         Router,
@@ -40,7 +40,7 @@ namespace TelegramBot
         SeoClub,
         VipClick
     }
-    enum TypeMessage
+    public enum TypeMessage
     {
         CaptchaImage,
         Captcha,
@@ -48,7 +48,7 @@ namespace TelegramBot
         Info,
         Result
     }
-    class TCPMessage
+    public class TCPMessage
     {
         public string Text { get; set; }
         public byte[] Data { get; set; }
@@ -66,7 +66,7 @@ namespace TelegramBot
         public TypeMessage Type { get; set; }
         public EnumTypeSite Site { get; set; }
     }
-    class EventArgTCPClient : EventArgs
+    public class EventArgTCPClient : EventArgs
     {
         public TCPMessage Message { get; set; }
         public EventArgTCPClient(TCPMessage message)
