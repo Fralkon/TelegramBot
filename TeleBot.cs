@@ -39,19 +39,19 @@ namespace TelegramBot
         ReceiverOptions receiverOptions;
         string buffer = "";
         EventWaitHandle eventMessage = new EventWaitHandle(false, EventResetMode.AutoReset);
-        public EventHandler<EventQuestionArg> EventTeleBotMessage { get; set; }
-        public EventHandler<EventImageArg> EventTeleBotMessageImage { get; set; }
+        public EventHandler<EventQuestionArg> ?EventTeleBotMessage { get; set; }
+        public EventHandler<EventImageArg> ?EventTeleBotMessageImage { get; set; }
         public TeleBot()
         {
             mySQL = new MySQL("clicker");
             using (DataTable userAdmin = mySQL.GetDataTableSQL("SELECT id_chat FROM users WHERE id = 1"))
                 if(userAdmin.Rows.Count != 0)
                     IdAdminTG = long.Parse(userAdmin.Rows[0]["id_chat"].ToString());
-            string token = String.Empty;
+            string ?token = null;
             using (DataTable settingTG = mySQL.GetDataTableSQL("SELECT token FROM telegram_setting WHERE id = 1"))
                 if (settingTG.Rows.Count != 0)
                     token = settingTG.Rows[0]["token"].ToString();
-            if (token == String.Empty)
+            if (token == null)
                 throw new Exception("Error token TG");
             botClient = new TelegramBotClient(token);
             cts = new CancellationTokenSource();
@@ -59,7 +59,7 @@ namespace TelegramBot
             handler.Question = false;
             handler.eventQuestion += GetMessageQuestion;
             receiverOptions = new ReceiverOptions();
-            tcpControl = new TCPControl(IPManager.GetEndPoint(EnumIPManager.BotTelegram));
+            tcpControl = new TCPControl(IPManager.GetEndPoint(new MySQL("clicker"), 1));
             tcpControl.StartListing();
             tcpControl.MessageReceived += Message;
         }
@@ -126,7 +126,7 @@ namespace TelegramBot
         {
             MySQL mySQL;
             public bool Question { get; set; }
-            public EventHandler<EventQuestionArg> eventQuestion { get; set; }
+            public EventHandler<EventQuestionArg> ?eventQuestion { get; set; }
             public UpdateHandler(MySQL mySQL)
             {
                 this.mySQL = mySQL;

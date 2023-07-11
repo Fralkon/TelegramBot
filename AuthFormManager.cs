@@ -111,13 +111,13 @@ namespace TelegramBot
                 }
             }
             if (idAuth == String.Empty)
-                mySQL.SendSQL("INSERT auth (id_object, step, login, password, site, status) VALUES('" +
+                mySQL.SendSQL("INSERT auth (id_object, step, login, password, site, status, last_day, all_time) VALUES('" +
                     idObj + "'," +
                     stepTextBox.Text + ",'" +
                     loginTextBox.Text + "','" + 
                     passTextBox.Text + "','" +
                     siteComboBox.Text + "','" +
-                    statusComboBox.Text + "')");
+                    statusComboBox.Text + "' , 0 , 0)");
             else
                 mySQL.SendSQL("UPDATE auth SET id_object = "+idObj +
                     " , step = '" + stepTextBox.Text +

@@ -10,12 +10,21 @@ namespace TelegramBot
         {
             this.mySQL = mySQL;
             InitializeComponent();
+
+            using (DataTable dt = mySQL.GetDataTableSQL("SELECT name FROM object WHERE name NOT LIKE 'Telegram'"))
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    objectComboBox.Items.Add(dr["name"]);
+                }
+            }
         }
         public StepForm(MySQL mySQL, string idStep)
         {
             this.idStep = idStep;
             this.mySQL = mySQL;
             InitializeComponent();
+
             using (DataTable dt = mySQL.GetDataTableSQL("SELECT name FROM object WHERE name NOT LIKE 'Telegram'"))
             {
                 foreach (DataRow dr in dt.Rows)

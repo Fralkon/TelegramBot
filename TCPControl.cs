@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Net;
@@ -15,17 +16,6 @@ namespace TelegramBot
     {
         BotTelegram,
         ClickMashine
-    }
-    public static class IPManager {
-        public static IPEndPoint GetEndPoint(EnumIPManager enumIP)
-        {
-            switch (enumIP)
-            {
-                case EnumIPManager.BotTelegram: return new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1000);
-                case EnumIPManager.ClickMashine: return new IPEndPoint(IPAddress.Parse("127.0.0.1"), 1001);
-                default: throw new Exception("Error GetEndPoint");
-            }
-        }
     }
     public enum EnumTypeSite
     {
@@ -50,21 +40,38 @@ namespace TelegramBot
     }
     public class TCPMessage
     {
-        public string Text { get; set; }
-        public byte[] Data { get; set; }
+        public string? Text { get; set; }
+        public byte[]? Data { get; set; }
         [JsonConstructor]
         public TCPMessage()
         {
 
         }
-        public TCPMessage(string text, TypeMessage type, EnumTypeSite typeSite)
+        public TCPMessage(string text, int IDMashine, TypeMessage type, EnumTypeSite typeSite)
         {
+            this.IDMashine = IDMashine;
             Type = type;
             Text = text;
             Site = typeSite;
         }
         public TypeMessage Type { get; set; }
         public EnumTypeSite Site { get; set; }
+        public int IDMashine { get; set; }
+    }
+    public static class IPManager
+    {
+        public static IPEndPoint GetEndPoint(MySQL mySQL, int IDObject)
+        {
+            using (DataTable dt = mySQL.GetDataTableSQL("SELECT ip, port FROM object WHERE id = " + IDObject.ToString()))
+            {
+                if (dt.Rows.Count > 0)
+                {
+                    return new IPEndPoint(IPAddress.Parse(dt.Rows[0]["ip"].ToString()),
+                        int.Parse(dt.Rows[0]["port"].ToString()));
+                }
+                else return null;
+            }
+        }
     }
     public class EventArgTCPClient : EventArgs
     {
@@ -84,6 +91,7 @@ namespace TelegramBot
         {
             return
                 "Type message: " + Message.Type.ToString() + Environment.NewLine +
+                "IDMashine: " + Message.IDMashine.ToString() + Environment.NewLine +
                 "Name site: " + Message.Site.ToString() + Environment.NewLine +
                 "Text: " + Message.Text + Environment.NewLine +
                 "File: " + (Message.Data.Length > 0 ? "Yes" : "No");
@@ -93,10 +101,12 @@ namespace TelegramBot
     {
         public event EventHandler<EventArgTCPClient> MessageReceived;
         TcpListener Listener;
+        MySQL MySQL;
         public TCPControl(IPEndPoint ipEndPoint)
         {
+            MySQL = new MySQL("clicker");
             Listener = new TcpListener(ipEndPoint);
-            Listener.Start();
+            Listener.Start(); 
         }
         public async void StartListing()
         {
@@ -150,7 +160,7 @@ namespace TelegramBot
             TcpClient ControlServer = new TcpClient();
             try
             {
-                ControlServer.Connect(IPManager.GetEndPoint(enumIP));
+                ControlServer.Connect(IPManager.GetEndPoint(MySQL, message.IDMashine));
                 ControlServer.GetStream().Write(Encoding.UTF8.GetBytes(JsonSerializer.Serialize<TCPMessage>(message) + "\0"));
             }
             catch (Exception ex)
@@ -161,12 +171,12 @@ namespace TelegramBot
         }
         public void SendResultMessage(string text, EnumTypeSite site)
         {
-            TCPMessage message = new TCPMessage(text, TypeMessage.Result, site);
+            TCPMessage message = new TCPMessage(text,1 , TypeMessage.Result, site);
             SendTCPMesage(message, EnumIPManager.ClickMashine);
         }
         public void SendMessage(string text, EnumIPManager enumIP)
         {
-            TCPMessage message = new TCPMessage(text, TypeMessage.Result, EnumTypeSite.None);
+            TCPMessage message = new TCPMessage(text,1 , TypeMessage.Result, EnumTypeSite.None);
             SendTCPMesage(message, enumIP);
         }
     }
