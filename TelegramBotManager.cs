@@ -32,6 +32,7 @@ namespace TelegramBot
         {
             string SQLData = "SELECT * FROM users";
             DataTable datatable = mySQL.GetDataTableSQL(SQLData);
+           
             datatable.Columns["id"].ColumnName = "ID";
             datatable.Columns["id_chat"].ColumnName = "ID чат";
             datatable.Columns["name"].ColumnName = "Имя";
