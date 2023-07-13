@@ -169,14 +169,14 @@ namespace TelegramBot
             }
             ControlServer.Close();
         }
-        public void SendResultMessage(string text, EnumTypeSite site)
+        public void SendResultMessage(string text, int IDMashine, EnumTypeSite site)
         {
-            TCPMessage message = new TCPMessage(text,1 , TypeMessage.Result, site);
+            TCPMessage message = new TCPMessage(text, IDMashine, TypeMessage.Result, site);
             SendTCPMesage(message, EnumIPManager.ClickMashine);
         }
-        public void SendMessage(string text, EnumIPManager enumIP)
+        public void SendMessage(string text, int IDMashine, EnumIPManager enumIP)
         {
-            TCPMessage message = new TCPMessage(text,1 , TypeMessage.Result, EnumTypeSite.None);
+            TCPMessage message = new TCPMessage(text, IDMashine, TypeMessage.Result, EnumTypeSite.None);
             SendTCPMesage(message, enumIP);
         }
     }

@@ -105,7 +105,7 @@ namespace TelegramBot
                                 botClient.SendPhotoAsync(IdAdminTG, new InputMedia(ms, "Screen.png"));
                                 handler.Question = true;
                                 eventMessage.WaitOne();
-                                tcpControl.SendResultMessage(buffer, arg.Message.Site);
+                                tcpControl.SendResultMessage(buffer, arg.Message.IDMashine, arg.Message.Site);
                             };
                             return;
                         }
