@@ -28,136 +28,152 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.usersData = new System.Windows.Forms.DataGridView();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.objectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.telegramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.создатьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.изменитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.удалитьToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.usersData)).BeginInit();
-            this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            usersData = new DataGridView();
+            menuStrip1 = new MenuStrip();
+            файлToolStripMenuItem = new ToolStripMenuItem();
+            telegramToolStripMenuItem = new ToolStripMenuItem();
+            textBox1 = new TextBox();
+            pictureBox1 = new PictureBox();
+            создатьToolStripMenuItem1 = new ToolStripMenuItem();
+            изменитьToolStripMenuItem1 = new ToolStripMenuItem();
+            удалитьToolStripMenuItem1 = new ToolStripMenuItem();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            изменитьToolStripMenuItem = new ToolStripMenuItem();
+            создатьToolStripMenuItem = new ToolStripMenuItem();
+            удалитьToolStripMenuItem = new ToolStripMenuItem();
+            ((System.ComponentModel.ISupportInitialize)usersData).BeginInit();
+            menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            contextMenuStrip1.SuspendLayout();
+            SuspendLayout();
             // 
             // usersData
             // 
-            this.usersData.AllowUserToAddRows = false;
-            this.usersData.AllowUserToDeleteRows = false;
-            this.usersData.AllowUserToResizeColumns = false;
-            this.usersData.AllowUserToResizeRows = false;
-            this.usersData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.usersData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.usersData.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
-            this.usersData.Location = new System.Drawing.Point(582, 38);
-            this.usersData.MultiSelect = false;
-            this.usersData.Name = "usersData";
-            this.usersData.ReadOnly = true;
-            this.usersData.RowHeadersVisible = false;
-            this.usersData.RowTemplate.Height = 25;
-            this.usersData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.usersData.Size = new System.Drawing.Size(480, 485);
-            this.usersData.TabIndex = 0;
+            usersData.AllowUserToAddRows = false;
+            usersData.AllowUserToDeleteRows = false;
+            usersData.AllowUserToResizeColumns = false;
+            usersData.AllowUserToResizeRows = false;
+            usersData.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            usersData.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            usersData.BackgroundColor = SystemColors.ButtonFace;
+            usersData.Location = new Point(582, 38);
+            usersData.MultiSelect = false;
+            usersData.Name = "usersData";
+            usersData.ReadOnly = true;
+            usersData.RowHeadersVisible = false;
+            usersData.RowTemplate.Height = 25;
+            usersData.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            usersData.Size = new Size(480, 485);
+            usersData.TabIndex = 0;
             // 
             // menuStrip1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.файлToolStripMenuItem,
-            this.objectToolStripMenuItem,
-            this.telegramToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1074, 24);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
+            menuStrip1.Items.AddRange(new ToolStripItem[] { файлToolStripMenuItem, telegramToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(1074, 24);
+            menuStrip1.TabIndex = 1;
+            menuStrip1.Text = "menuStrip1";
             // 
             // файлToolStripMenuItem
             // 
-            this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
-            this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.файлToolStripMenuItem.Text = "Файл";
-            // 
-            // objectToolStripMenuItem
-            // 
-            this.objectToolStripMenuItem.Name = "objectToolStripMenuItem";
-            this.objectToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
-            this.objectToolStripMenuItem.Text = "Object";
-            this.objectToolStripMenuItem.Click += new System.EventHandler(this.objectToolStripMenuItem_Click);
+            файлToolStripMenuItem.Name = "файлToolStripMenuItem";
+            файлToolStripMenuItem.Size = new Size(48, 20);
+            файлToolStripMenuItem.Text = "Файл";
             // 
             // telegramToolStripMenuItem
             // 
-            this.telegramToolStripMenuItem.Name = "telegramToolStripMenuItem";
-            this.telegramToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
-            this.telegramToolStripMenuItem.Text = "Telegram";
-            this.telegramToolStripMenuItem.Click += new System.EventHandler(this.telegramToolStripMenuItem_Click);
+            telegramToolStripMenuItem.Name = "telegramToolStripMenuItem";
+            telegramToolStripMenuItem.Size = new Size(82, 20);
+            telegramToolStripMenuItem.Text = "Reset Query";
+            telegramToolStripMenuItem.Click += resetQuakToolStripMenuItem_Click;
             // 
             // textBox1
             // 
-            this.textBox1.AcceptsReturn = true;
-            this.textBox1.AcceptsTab = true;
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(12, 38);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(564, 298);
-            this.textBox1.TabIndex = 2;
-            this.textBox1.WordWrap = false;
+            textBox1.AcceptsReturn = true;
+            textBox1.AcceptsTab = true;
+            textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            textBox1.Location = new Point(12, 38);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.ReadOnly = true;
+            textBox1.Size = new Size(564, 298);
+            textBox1.TabIndex = 2;
+            textBox1.WordWrap = false;
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(12, 342);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(564, 181);
-            this.pictureBox1.TabIndex = 3;
-            this.pictureBox1.TabStop = false;
+            pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pictureBox1.Location = new Point(12, 342);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(564, 181);
+            pictureBox1.TabIndex = 3;
+            pictureBox1.TabStop = false;
             // 
             // создатьToolStripMenuItem1
             // 
-            this.создатьToolStripMenuItem1.Name = "создатьToolStripMenuItem1";
-            this.создатьToolStripMenuItem1.Size = new System.Drawing.Size(32, 19);
+            создатьToolStripMenuItem1.Name = "создатьToolStripMenuItem1";
+            создатьToolStripMenuItem1.Size = new Size(32, 19);
             // 
             // изменитьToolStripMenuItem1
             // 
-            this.изменитьToolStripMenuItem1.Name = "изменитьToolStripMenuItem1";
-            this.изменитьToolStripMenuItem1.Size = new System.Drawing.Size(32, 19);
+            изменитьToolStripMenuItem1.Name = "изменитьToolStripMenuItem1";
+            изменитьToolStripMenuItem1.Size = new Size(32, 19);
             // 
             // удалитьToolStripMenuItem1
             // 
-            this.удалитьToolStripMenuItem1.Name = "удалитьToolStripMenuItem1";
-            this.удалитьToolStripMenuItem1.Size = new System.Drawing.Size(32, 19);
+            удалитьToolStripMenuItem1.Name = "удалитьToolStripMenuItem1";
+            удалитьToolStripMenuItem1.Size = new Size(32, 19);
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { создатьToolStripMenuItem, изменитьToolStripMenuItem, удалитьToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(181, 92);
+            // 
+            // изменитьToolStripMenuItem
+            // 
+            изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
+            изменитьToolStripMenuItem.Size = new Size(180, 22);
+            изменитьToolStripMenuItem.Text = "Изменить";
+            изменитьToolStripMenuItem.Click += изменитьToolStripMenuItem_Click;
+            // 
+            // создатьToolStripMenuItem
+            // 
+            создатьToolStripMenuItem.Name = "создатьToolStripMenuItem";
+            создатьToolStripMenuItem.Size = new Size(180, 22);
+            создатьToolStripMenuItem.Text = "Создать";
+            создатьToolStripMenuItem.Click += создатьToolStripMenuItem_Click;
+            // 
+            // удалитьToolStripMenuItem
+            // 
+            удалитьToolStripMenuItem.Name = "удалитьToolStripMenuItem";
+            удалитьToolStripMenuItem.Size = new Size(180, 22);
+            удалитьToolStripMenuItem.Text = "Удалить";
+            удалитьToolStripMenuItem.Click += удалитьToolStripMenuItem_Click;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1074, 535);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.usersData);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "MainForm";
-            this.Text = "Form1";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.usersData)).EndInit();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1074, 535);
+            Controls.Add(pictureBox1);
+            Controls.Add(textBox1);
+            Controls.Add(usersData);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
+            Name = "MainForm";
+            Text = "Form1";
+            FormClosing += MainForm_FormClosing;
+            Load += MainForm_Load;
+            ((System.ComponentModel.ISupportInitialize)usersData).EndInit();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            contextMenuStrip1.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -170,7 +186,10 @@
         private ToolStripMenuItem создатьToolStripMenuItem1;
         private ToolStripMenuItem изменитьToolStripMenuItem1;
         private ToolStripMenuItem удалитьToolStripMenuItem1;
-        private ToolStripMenuItem objectToolStripMenuItem;
         private ToolStripMenuItem telegramToolStripMenuItem;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem изменитьToolStripMenuItem;
+        private ToolStripMenuItem создатьToolStripMenuItem;
+        private ToolStripMenuItem удалитьToolStripMenuItem;
     }
 }

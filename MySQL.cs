@@ -37,6 +37,7 @@ namespace TelegramBot
                 sqlCom.ExecuteNonQuery();
                 MySqlDataAdapter dataAdapter = new MySqlDataAdapter(sqlCom);
                 dataAdapter.Fill(dt);
+                connection.Close();
             }
             return dt;
         }
@@ -47,6 +48,7 @@ namespace TelegramBot
                 connection.Open();
                 MySqlCommand sqlCom = new MySqlCommand(SQL, connection);
                 sqlCom.ExecuteNonQuery();
+                connection.Close();
                 return sqlCom.LastInsertedId;
             }
         }
@@ -57,6 +59,7 @@ namespace TelegramBot
                 connection.Open();
                 MySqlCommand sqlCom = new MySqlCommand(sql, connection);
                 sqlCom.ExecuteNonQuery();
+                connection.Close();
             }
         }
         private string serverName = "astf3-stp5"; // Адрес сервера (для локальной базы пишите "localhost")
