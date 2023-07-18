@@ -74,13 +74,15 @@ namespace TelegramBot
         }
         public async void Start()
         {
-            EventTeleBotMessage(this, new EventQuestionArg("Start Telegram Bot"));
             botClient.StartReceiving(handler, receiverOptions, cancellationToken: cts.Token);
-            Console.WriteLine("Bot started");
-            await Task.Run(() =>
-                Task.Delay(-1, cancellationToken: cts.Token) // Такой вариант советуют MS: https://github.com/dotnet/runtime/issues/28510#issuecomment-458139641
-            );
-            Console.WriteLine("Bot stopped");
+            EventTeleBotMessage(this, new EventQuestionArg("Start Telegram Bot"));
+            while (true)
+            {
+                await Task.Run(() =>
+                    Task.Delay(-1, cancellationToken: cts.Token) // Такой вариант советуют MS: https://github.com/dotnet/runtime/issues/28510#issuecomment-458139641
+                );
+                EventTeleBotMessage(this, new EventQuestionArg("Stoped Telegram Bot"));
+            }
         }
         public void Stop()
         {
