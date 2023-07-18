@@ -1,5 +1,7 @@
 ﻿using System.Data;
 using System.Drawing.Imaging;
+using System.Net.Sockets;
+using System.Net;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
@@ -59,7 +61,14 @@ namespace TelegramBot
             handler.Question = false;
             handler.eventQuestion += GetMessageQuestion;
             receiverOptions = new ReceiverOptions();
-            tcpControl = new TCPControl(IPManager.GetEndPoint(new MySQL("clicker"), 1));
+
+            IPAddress iP = Dns.GetHostAddresses(Dns.GetHostName()).First<IPAddress>(f => f.AddressFamily == AddressFamily.InterNetwork);
+            if (iP == null)
+                throw new Exception("Error IP server");
+
+            mySQL.SendSQL("UPDATE object SET status = 'online' , ip = '" + iP.ToString() + "' , port = " + TCPControl.Port.ToString() + " WHERE id = 1");
+
+            tcpControl = new TCPControl(iP);
             tcpControl.StartListing();
             tcpControl.MessageReceived += Message;
         }
@@ -75,6 +84,7 @@ namespace TelegramBot
         }
         public void Stop()
         {
+            mySQL.SendSQL("UPDATE object SET status = 'offline' WHERE id = 1");
             cts.Cancel();
         }
         public void ResetQuestion()

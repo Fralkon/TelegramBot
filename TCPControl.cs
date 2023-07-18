@@ -12,11 +12,6 @@ using System.Threading.Tasks;
 
 namespace TelegramBot
 {
-    public enum EnumIPManager
-    {
-        BotTelegram,
-        ClickMashine
-    }
     public enum EnumTypeSite
     {
         None,
@@ -97,15 +92,16 @@ namespace TelegramBot
                 "File: " + (Message.Data.Length > 0 ? "Yes" : "No");
         }
     }
-    class TCPControl : IDisposable
+    class TCPControl
     {
         public event EventHandler<EventArgTCPClient> MessageReceived;
         TcpListener Listener;
         MySQL MySQL;
-        public TCPControl(IPEndPoint ipEndPoint)
+        public const int Port = 50001;
+        public TCPControl(IPAddress iPAddress)
         {
             MySQL = new MySQL("clicker");
-            Listener = new TcpListener(ipEndPoint);
+            Listener = new TcpListener(iPAddress,Port);
             Listener.Start(); 
         }
         public async void StartListing()
@@ -148,14 +144,14 @@ namespace TelegramBot
                 client.Close();
             });
         }
-        public void Dispose()
+        ~TCPControl()
         {
             if (Listener != null)
             {
                 Listener.Stop();
             }
         }
-        private void SendTCPMesage(TCPMessage message, EnumIPManager enumIP)
+        private void SendTCPMesage(TCPMessage message)
         {
             TcpClient ControlServer = new TcpClient();
             try
@@ -172,12 +168,12 @@ namespace TelegramBot
         public void SendResultMessage(string text, int IDMashine, EnumTypeSite site)
         {
             TCPMessage message = new TCPMessage(text, IDMashine, TypeMessage.Result, site);
-            SendTCPMesage(message, EnumIPManager.ClickMashine);
+            SendTCPMesage(message);
         }
-        public void SendMessage(string text, int IDMashine, EnumIPManager enumIP)
+        public void SendMessage(string text, int IDMashine)
         {
             TCPMessage message = new TCPMessage(text, IDMashine, TypeMessage.Result, EnumTypeSite.None);
-            SendTCPMesage(message, enumIP);
+            SendTCPMesage(message);
         }
     }
 }
