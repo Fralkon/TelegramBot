@@ -61,8 +61,8 @@ namespace TelegramBot
             handler.Question = false;
             handler.eventQuestion += GetMessageQuestion;
             receiverOptions = new ReceiverOptions();
-
-            IPAddress iP = Dns.GetHostAddresses(Dns.GetHostName()).First<IPAddress>(f => f.AddressFamily == AddressFamily.InterNetwork);
+            
+            IPAddress iP = Dns.GetHostAddresses(Dns.GetHostName()).First<IPAddress>(f => f.AddressFamily == AddressFamily.InterNetwork && f.MapToIPv4().ToString().IndexOf("192") != -1);
             if (iP == null)
                 throw new Exception("Error IP server");
 
@@ -78,9 +78,16 @@ namespace TelegramBot
             EventTeleBotMessage(this, new EventQuestionArg("Start Telegram Bot"));
             while (true)
             {
-                await Task.Run(() =>
-                    Task.Delay(-1, cancellationToken: cts.Token) // Такой вариант советуют MS: https://github.com/dotnet/runtime/issues/28510#issuecomment-458139641
-                );
+                try
+                {
+                    await Task.Run(() =>
+                        Task.Delay(-1, cancellationToken: cts.Token) // Такой вариант советуют MS: https://github.com/dotnet/runtime/issues/28510#issuecomment-458139641
+                    );
+                }
+                catch(Exception ex)
+                {
+                    EventTeleBotMessage(this, new EventQuestionArg(ex.Message));
+                }
                 EventTeleBotMessage(this, new EventQuestionArg("Stoped Telegram Bot"));
             }
         }
@@ -193,11 +200,13 @@ namespace TelegramBot
             public Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
             {
                 Console.Error.WriteLine(exception);
+                eventQuestion(this, new EventQuestionArg(exception.Message));
                 return Task.CompletedTask;
             }
             public Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
             {
-                throw new NotImplementedException();
+                eventQuestion(this, new EventQuestionArg(exception.Message));
+                return Task.CompletedTask;
             }
         }
     }
