@@ -16,11 +16,11 @@ namespace TelegramBot
         }
         public void GetMessageQuestion(object e, EventQuestionArg arg)
         {
-            textBox1.Invoke((MethodInvoker)delegate { textBox1.Text += arg.ToString(); textBox1.ScrollToCaret(); });
+            textBox1.Invoke(()=> { textBox1.AppendText(arg.ToString()); });
         }
         public void GetMessageQuestionBitmap(object e, EventImageArg arg)
         {
-            pictureBox1.Invoke((MethodInvoker)delegate { pictureBox1.Image = arg.Image; });
+            pictureBox1.Invoke(()=> { pictureBox1.Image = arg.Image; });
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
