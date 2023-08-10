@@ -6,6 +6,7 @@ using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using System.Windows.Forms;
 
 namespace TelegramBot
 {
@@ -39,6 +40,7 @@ namespace TelegramBot
         CancellationTokenSource cts;
         UpdateHandler handler;
         ReceiverOptions receiverOptions;
+        TasksManager tasksManager = new TasksManager();
         string buffer = "";
         EventWaitHandle eventMessage = new EventWaitHandle(false, EventResetMode.AutoReset);
         public EventHandler<EventQuestionArg> ?EventTeleBotMessage { get; set; }
@@ -109,36 +111,38 @@ namespace TelegramBot
         }
         public void Message(object? e, EventArgTCPClient arg)
         {
-            lock (obj)
+            //tasksManager.Add(new Task(() => { TaskMessage(arg); }));
+            TaskMessage(arg);
+        }
+        private void TaskMessage(EventArgTCPClient arg)
+        {
+            EventTeleBotMessage(this, new EventQuestionArg(arg.ToString()));
+            if (arg.Message.Data.Length > 0)
+                EventTeleBotMessageImage(this, new EventImageArg(arg.GetImage()));
+            switch (arg.Message.Type)
             {
-                EventTeleBotMessage(this, new EventQuestionArg(arg.ToString()));
-                if (arg.Message.Data.Length > 0)
-                    EventTeleBotMessageImage(this, new EventImageArg(arg.GetImage()));
-                switch (arg.Message.Type)
-                {
-                    case TypeMessage.CaptchaImage:
+                case TypeMessage.CaptchaImage:
+                    {
+                        using (MemoryStream ms = new MemoryStream(arg.Message.Data))
                         {
-                            using (MemoryStream ms = new MemoryStream(arg.Message.Data))
-                            {
-                                eventMessage.Reset();
-                                botClient.SendPhotoAsync(IdAdminTG, new InputMedia(ms, "Screen.png"));
-                                handler.Question = true;
-                                eventMessage.WaitOne();
-                                tcpControl.SendResultMessage(buffer, arg.Message.IDMashine, arg.Message.Site);
-                            };
-                            return;
-                        }
-                    case TypeMessage.Error:
-                        {
-                            botClient.SendTextMessageAsync(IdAdminTG, arg.Message.Text);
-                            return;
-                        }
-                    default:
-                        {
-                            Console.WriteLine("Error type message");
-                            return;
-                        }
-                }
+                            eventMessage.Reset();
+                            botClient.SendPhotoAsync(IdAdminTG, new InputMedia(ms, "Screen.png"));
+                            handler.Question = true;
+                            eventMessage.WaitOne();
+                            tcpControl.SendResultMessage(buffer, arg.Message.IDMashine, arg.Message.Site);
+                        };
+                        return;
+                    }
+                case TypeMessage.Error:
+                    {
+                        botClient.SendTextMessageAsync(IdAdminTG, arg.Message.Text);
+                        return;
+                    }
+                default:
+                    {
+                        Console.WriteLine("Error type message");
+                        return;
+                    }
             }
         }
         class UpdateHandler : IUpdateHandler
@@ -155,20 +159,12 @@ namespace TelegramBot
                 Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(update));
                 if (update.Type == UpdateType.Message)
                 {
-                    var message = update.Message;
-                    if (Question)
-                    {
-                        await botClient.SendTextMessageAsync(chatId: message.Chat, text: "OK", cancellationToken: cancellationToken);
-                        eventQuestion(this, new EventQuestionArg(message.Text));
-                        Question = false;
-                    }
-                    else
-                        Request(message.Text, botClient, update.Message.Chat, cancellationToken);
+                    Request(update.Message.Text, botClient, update.Message.Chat, cancellationToken);
                 }
             }
-            private async void Request(string request, ITelegramBotClient botClient, Chat chat, CancellationToken cancellationToken)
+            private async void Request(string text, ITelegramBotClient botClient, Chat chat, CancellationToken cancellationToken)
             {
-                switch (request)
+                switch (text)
                 {
                     case "status":
                         {
@@ -190,9 +186,36 @@ namespace TelegramBot
                             }
                             return;
                         }
+                    case "info":
+                        {
+                            string answer = String.Empty;
+                            using (DataTable status = mySQL.GetDataTableSQL("SELECT name, status FROM object"))
+                            {
+                                if (status.Rows.Count > 0)
+                                {
+                                    foreach (DataRow row in status.Rows)
+                                    {
+                                        answer += "Object: " + row["name"].ToString() + " status: " + row["status"].ToString() + "\n";
+                                    }
+                                }
+                                else
+                                {
+                                    answer = "Нет данных.";
+                                }
+                                await botClient.SendTextMessageAsync(chatId: chat, text: answer, cancellationToken: cancellationToken);
+                            }
+                            return;
+                        }
                     default:
                         {
-                            await botClient.SendTextMessageAsync(chatId: chat, text: "Ошибка запроса", cancellationToken: cancellationToken);
+                            if (Question)
+                            {
+                                await botClient.SendTextMessageAsync(chatId: chat, text: "OK", cancellationToken: cancellationToken);
+                                eventQuestion(this, new EventQuestionArg(text));
+                                Question = false;
+                            }
+                            else
+                                await botClient.SendTextMessageAsync(chatId: chat, text: "Ошибка запроса", cancellationToken: cancellationToken);
                             return;
                         }
                 }
