@@ -2,7 +2,7 @@
 using System.Xml;
 using System.Data;
 
-namespace ClickMashine
+namespace TelegramBot
 {
     class MySQLExeption : Exception
     {
