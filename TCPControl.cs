@@ -98,9 +98,9 @@ namespace TelegramBot
         TcpListener Listener;
         MySQL MySQL;
         public const int Port = 50001;
-        public TCPControl(IPAddress iPAddress)
+        public TCPControl(IPAddress iPAddress, MySQL mySQL)
         {
-            MySQL = new MySQL("clicker");
+            this.MySQL = mySQL;
             Listener = new TcpListener(iPAddress,Port);
             Listener.Start(); 
         }

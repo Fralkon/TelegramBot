@@ -45,9 +45,9 @@ namespace TelegramBot
         EventWaitHandle eventMessage = new EventWaitHandle(false, EventResetMode.AutoReset);
         public EventHandler<EventQuestionArg> ?EventTeleBotMessage { get; set; }
         public EventHandler<EventImageArg> ?EventTeleBotMessageImage { get; set; }
-        public TeleBot()
+        public TeleBot(MySQL mySQL)
         {
-            mySQL = new MySQL("clicker");
+            this.mySQL = mySQL;
             using (DataTable userAdmin = mySQL.GetDataTableSQL("SELECT id_chat FROM users WHERE id = 1"))
                 if(userAdmin.Rows.Count != 0)
                     IdAdminTG = long.Parse(userAdmin.Rows[0]["id_chat"].ToString());
@@ -70,7 +70,7 @@ namespace TelegramBot
 
             mySQL.SendSQL("UPDATE object SET status = 'online' , ip = '" + iP.ToString() + "' , port = " + TCPControl.Port.ToString() + " WHERE id = 1");
 
-            tcpControl = new TCPControl(iP);
+            tcpControl = new TCPControl(iP,mySQL);
             tcpControl.StartListing();
             tcpControl.MessageReceived += Message;
         }
