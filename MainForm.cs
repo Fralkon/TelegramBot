@@ -9,7 +9,7 @@ namespace TelegramBot
         MySQL mySQL;
         public MainForm()
         {
-            mySQL = new MySQL("Telegram");
+            mySQL = new MySQL("Telebot");
             teleBot = new TeleBot(mySQL);
             InitializeComponent();
             usersData.ContextMenuStrip = contextMenuStrip1;
