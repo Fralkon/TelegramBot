@@ -118,7 +118,7 @@ namespace TelegramBot
         private void TaskMessage(EventArgTCPClient arg)
         {
             EventTeleBotMessage(this, new EventQuestionArg(arg.ToString()));
-            if (arg.Message.Data.Length > 0)
+            if (arg.Message.Data != null)
                 EventTeleBotMessageImage(this, new EventImageArg(arg.GetImage()));
             switch (arg.Message.Type)
             {
@@ -127,7 +127,7 @@ namespace TelegramBot
                         using (MemoryStream ms = new MemoryStream(arg.Message.Data))
                         {
                             eventMessage.Reset();
-                            botClient.SendPhotoAsync(IdAdminTG, new InputMedia(ms, "Screen.png"));
+                            botClient.SendPhotoAsync(IdAdminTG, new InputFileStream(ms, "Screen.png"));
                             handler.Question = true;
                             eventMessage.WaitOne();
                             tcpControl.SendResultMessage(buffer, arg.Message.IDMashine, arg.Message.Site);
@@ -135,6 +135,11 @@ namespace TelegramBot
                         return;
                     }
                 case TypeMessage.Error:
+                    {
+                        botClient.SendTextMessageAsync(IdAdminTG, arg.Message.Text);
+                        return;
+                    }
+                case TypeMessage.Info:
                     {
                         botClient.SendTextMessageAsync(IdAdminTG, arg.Message.Text);
                         return;
@@ -155,15 +160,15 @@ namespace TelegramBot
             {
                 this.mySQL = mySQL;
             }
-            public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+            async Task IUpdateHandler.HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
             {
                 Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(update));
                 if (update.Type == UpdateType.Message)
                 {
-                    Request(update.Message.Text, botClient, update.Message.Chat, cancellationToken);
+                    await Request(update.Message.Text, botClient, update.Message.Chat, cancellationToken);
                 }
             }
-            private async void Request(string text, ITelegramBotClient botClient, Chat chat, CancellationToken cancellationToken)
+            private async Task Request(string text, ITelegramBotClient botClient, Chat chat, CancellationToken cancellationToken)
             {
                 switch (text)
                 {

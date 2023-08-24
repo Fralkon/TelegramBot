@@ -89,7 +89,7 @@ namespace TelegramBot
                 "IDMashine: " + Message.IDMashine.ToString() + Environment.NewLine +
                 "Name site: " + Message.Site.ToString() + Environment.NewLine +
                 "Text: " + Message.Text + Environment.NewLine +
-                "File: " + (Message.Data.Length > 0 ? "Yes" : "No");
+                "File: " + (Message.Data != null ? "Yes" : "No");
         }
     }
     class TCPControl
